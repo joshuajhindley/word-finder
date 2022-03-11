@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/word-finder/static/css/main.9def8c4a.css",
+    "main.js": "/word-finder/static/js/main.aab988af.js",
+    "static/js/787.0388194f.chunk.js": "/word-finder/static/js/787.0388194f.chunk.js",
+    "static/media/logo.svg": "/word-finder/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/word-finder/index.html",
+    "main.9def8c4a.css.map": "/word-finder/static/css/main.9def8c4a.css.map",
+    "main.aab988af.js.map": "/word-finder/static/js/main.aab988af.js.map",
+    "787.0388194f.chunk.js.map": "/word-finder/static/js/787.0388194f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9def8c4a.css",
+    "static/js/main.aab988af.js"
+  ]
+}
