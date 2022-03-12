@@ -1,6 +1,6 @@
 {
   "name": "word-finder",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://joshuajhindley.github.io/word-finder",
   "private": true,
   "dependencies": {
@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "@types/babel__core": "^7.1.18",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/pluralize": "^0.0.29",
