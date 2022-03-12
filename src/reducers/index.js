@@ -1,14 +1,27 @@
 import { combineReducers } from '@reduxjs/toolkit'
+import { actionTypes } from '../actions'
 
-const isTrue = (state, action) => {
+const isFresh = (state = true, action) => {
   switch (action) {
+    case actionTypes.FIND_RESULTS:
+      return false
     default:
-      return true
+      return state
+  }
+}
+
+const results = (state = [], action) => {
+  switch (action.type) {
+    case actionTypes.UPDATE_RESULTS:
+      return action.payload.results
+    default:
+      return state
   }
 }
 
 const reducers = {
-  isTrue
+  isFresh,
+  results
 }
 
 export const rootReducer = combineReducers(reducers)
