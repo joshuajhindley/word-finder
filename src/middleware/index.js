@@ -15,11 +15,13 @@ const findResults = (store, action) => {
 }
 
 export const middleware = (store) => (next) => (action) => {
+  next(action)
+
   switch (action.type) {
     case actionTypes.FIND_RESULTS:
       findResults(store, action)
       break
     default:
-      next(action)
+      break
   }
 }

@@ -2,7 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 import { actionTypes } from '../actions'
 
 const isFresh = (state = true, action) => {
-  switch (action) {
+  switch (action.type) {
     case actionTypes.FIND_RESULTS:
       return false
     default:
