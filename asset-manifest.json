@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/word-finder/static/css/main.83508027.css",
-    "main.js": "/word-finder/static/js/main.8b9de25a.js",
+    "main.css": "/word-finder/static/css/main.06cd83a3.css",
+    "main.js": "/word-finder/static/js/main.a24e2cad.js",
     "static/js/787.0388194f.chunk.js": "/word-finder/static/js/787.0388194f.chunk.js",
     "index.html": "/word-finder/index.html",
-    "main.83508027.css.map": "/word-finder/static/css/main.83508027.css.map",
-    "main.8b9de25a.js.map": "/word-finder/static/js/main.8b9de25a.js.map",
+    "main.06cd83a3.css.map": "/word-finder/static/css/main.06cd83a3.css.map",
+    "main.a24e2cad.js.map": "/word-finder/static/js/main.a24e2cad.js.map",
     "787.0388194f.chunk.js.map": "/word-finder/static/js/787.0388194f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.83508027.css",
-    "static/js/main.8b9de25a.js"
+    "static/css/main.06cd83a3.css",
+    "static/js/main.a24e2cad.js"
   ]
 }
