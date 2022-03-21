@@ -137,58 +137,66 @@ class App extends React.Component<IAppProps, IAppState> {
     const { results, isFresh } = this.props
 
     return (
-      <div className='App'>
-        <div className='search'>
-          <Form onSubmit={this.handleSubmit}>
-            {props => (
-              <form onSubmit={props.handleSubmit}>
-                <h2>Word Finder for Wordle</h2>
-                {[...Array(5)].map((e, i) => (
-                  <Field
-                    name={'letter' + (i + 1)}
-                    component='input'
-                    maxLength='1'
-                    key={i}
-                    ref={(el: HTMLInputElement) => (this.correct.current[i] = el)}
-                    parse={value => (value ? value.toUpperCase() : '')}
-                    onFocus={this.handleFocus}
-                    onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, i)}
-                    onInput={(e: SyntheticEvent) => this.handleInput(e, i)}
-                  />
-                ))}
-                <br />
-                <br />
-                {/* TODO add labels explaining */}
-                {[...Array(this.notBoxes)].map((e, i) => {
-                  return !this.show[i] ? null : (
+      <>
+        <div className='header'>
+          <a href='/'>
+            <button>{'< Home'}</button>
+          </a>
+        </div>
+        <div className='App'>
+          <div className='search'>
+            <Form onSubmit={this.handleSubmit}>
+              {props => (
+                <form onSubmit={props.handleSubmit}>
+                  <h2>Word Finder for Wordle</h2>
+                  {[...Array(5)].map((e, i) => (
                     <Field
-                      name={'notLetter' + (i + 1)}
+                      name={'letter' + (i + 1)}
                       component='input'
                       maxLength='1'
                       key={i}
-                      ref={(el: HTMLInputElement) => (this.incorrect.current[i] = el)}
+                      ref={(el: HTMLInputElement) => (this.correct.current[i] = el)}
                       parse={value => (value ? value.toUpperCase() : '')}
                       onFocus={this.handleFocus}
-                      onKeyUp={(e: SyntheticEvent) => this.handleNotKeyUp(e, i)}
-                      onInput={(e: SyntheticEvent) => this.handleNotInput(e, i)}
+                      onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, i)}
+                      onInput={(e: SyntheticEvent) => this.handleInput(e, i)}
                     />
-                  )
-                })}
-                <br />
-                <button type='submit'>Search</button>
-              </form>
-            )}
-          </Form>
+                  ))}
+                  <br />
+                  <br />
+                  {/* TODO add labels explaining */}
+                  {[...Array(this.notBoxes)].map((e, i) => {
+                    return !this.show[i] ? null : (
+                      <Field
+                        name={'notLetter' + (i + 1)}
+                        component='input'
+                        maxLength='1'
+                        key={i}
+                        ref={(el: HTMLInputElement) => (this.incorrect.current[i] = el)}
+                        parse={value => (value ? value.toUpperCase() : '')}
+                        onFocus={this.handleFocus}
+                        onKeyUp={(e: SyntheticEvent) => this.handleNotKeyUp(e, i)}
+                        onInput={(e: SyntheticEvent) => this.handleNotInput(e, i)}
+                      />
+                    )
+                  })}
+                  <br />
+                  <button type='submit'>Search</button>
+                  {/* TODO add reset button */}
+                </form>
+              )}
+            </Form>
+          </div>
+          <div className='results'>
+            {!isFresh && this.getNumberOfResults()}
+            {results.map((result: string, index: number) => (
+              <div className='result' key={index}>
+                <label key={index}>{result}</label>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className='results'>
-          {!isFresh && this.getNumberOfResults()}
-          {results.map((result: string, index: number) => (
-            <div className='result' key={index}>
-              <label key={index}>{result}</label>
-            </div>
-          ))}
-        </div>
-      </div>
+      </>
     )
   }
 }

@@ -1,6 +1,26 @@
 .App {
   text-align: center;
-  margin-top: 10vh;
+  margin-top: 5vh;
+  margin-top: calc(10vh - 50px);
+}
+
+.header {
+  height: 50px;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+}
+
+.header a {
+  margin-left: -200px;
+}
+
+.header button {
+  background-color: white;
+  border: 0;
+  font-size: 16px;
+  margin-top: 0;
+  width: 100px;
 }
 
 .results {
@@ -19,8 +39,9 @@ input {
 }
 
 button {
-  margin-top: 25px;
-  width: 100px;
-  height: 25px;
-  font-size: 14px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 40px;
+  height: 50px;
+  width: 200px;
 }
