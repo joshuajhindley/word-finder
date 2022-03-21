@@ -3,14 +3,14 @@ export const actionTypes = {
   UPDATE_RESULTS: 'UPDATE_RESULTS'
 }
 
-export const findResults = (values) => {
+export const findResults = values => {
   return {
     type: actionTypes.FIND_RESULTS,
     values
   }
 }
 
-export const updateResults = (results) => {
+export const updateResults = results => {
   return {
     type: actionTypes.UPDATE_RESULTS,
     payload: {

@@ -10,11 +10,23 @@ const findResults = (store, action) => {
     searchTerm += val && val !== ' ' ? val : regex
   }
 
-  const results = words.filter((word) => word.match(searchTerm)).slice(0, 500)
+  let exclusion = ''
+  let n = 1
+  while (true) {
+    const letter = values['notLetter' + n]
+    if (letter === undefined) {
+      break
+    }
+    exclusion += letter
+    n++
+  }
+  exclusion = exclusion.length === 0 ? '["]' : '[' + exclusion + ']'
+
+  const results = words.filter(word => word.match(searchTerm) && !word.match(exclusion)).slice(0, 500)
   store.dispatch(updateResults(results))
 }
 
-export const middleware = (store) => (next) => (action) => {
+export const middleware = store => next => action => {
   next(action)
 
   switch (action.type) {
