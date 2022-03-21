@@ -142,6 +142,7 @@ class App extends React.Component<IAppProps, IAppState> {
           <Form onSubmit={this.handleSubmit}>
             {props => (
               <form onSubmit={props.handleSubmit}>
+                <h2>Word Finder for Wordle</h2>
                 {[...Array(5)].map((e, i) => (
                   <Field
                     name={'letter' + (i + 1)}
