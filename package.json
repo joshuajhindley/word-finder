@@ -1,6 +1,6 @@
 {
   "name": "word-finder",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "homepage": "https://joshuajhindley.github.io/word-finder",
   "license": "GPL-3.0-only",
   "dependencies": {

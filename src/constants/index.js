@@ -1,3 +1,4 @@
+//TODO try to change this format
 const words = [
   'AAHED',
   'AALII',
