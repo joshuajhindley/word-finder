@@ -15,6 +15,7 @@ interface IAppState {}
 
 class App extends React.Component<IAppProps, IAppState> {
   correct: React.MutableRefObject<Array<HTMLInputElement>>
+  anyPos: React.MutableRefObject<Array<HTMLInputElement>>
   incorrect: React.MutableRefObject<Array<HTMLInputElement>>
   notBoxes: number
   show: Array<boolean>
@@ -23,6 +24,8 @@ class App extends React.Component<IAppProps, IAppState> {
     super(props)
     this.correct = createRef() as React.MutableRefObject<Array<HTMLInputElement>>
     this.correct.current = []
+    this.anyPos = createRef() as React.MutableRefObject<Array<HTMLInputElement>>
+    this.anyPos.current = []
     this.incorrect = createRef() as React.MutableRefObject<Array<HTMLInputElement>>
     this.incorrect.current = []
     this.show = new Array(true)
@@ -31,12 +34,12 @@ class App extends React.Component<IAppProps, IAppState> {
 
   handleFocus = (event: SyntheticEvent) => (event.target as HTMLInputElement).select()
 
-  handleKeyUp = (event: SyntheticEvent, pos: number) => {
+  handleKeyUp = (event: SyntheticEvent, pos: number, ref: 'correct' | 'anyPos') => {
     const key = (event.nativeEvent as KeyboardEvent).key
     if (pos > 0 && ['Backspace', 'Delete', 'ArrowLeft'].includes(key)) {
-      this.correct.current[pos - 1].focus()
-    } else if (pos < this.correct.current.length && key === 'ArrowRight') {
-      this.correct.current[pos + 1].focus()
+      this[ref].current[pos - 1].focus()
+    } else if (pos < this[ref].current.length && key === 'ArrowRight') {
+      this[ref].current[pos + 1].focus()
     }
   }
 
@@ -83,12 +86,12 @@ class App extends React.Component<IAppProps, IAppState> {
     }
   }
 
-  handleInput = (event: SyntheticEvent, pos: number) => {
+  handleInput = (event: SyntheticEvent, pos: number, ref: 'correct' | 'anyPos') => {
     // only allow letters
-    if (!/^[A-Za-z]$/.test(this.correct.current[pos].value)) {
-      this.correct.current[pos].value = ''
-    } else if (pos + 1 < this.correct.current.length) {
-      this.correct.current[pos + 1].focus()
+    if (!/^[A-Za-z]$/.test(this[ref].current[pos].value)) {
+      this[ref].current[pos].value = ''
+    } else if (pos + 1 < this[ref].current.length) {
+      this[ref].current[pos + 1].focus()
     }
   }
 
@@ -136,6 +139,8 @@ class App extends React.Component<IAppProps, IAppState> {
   render() {
     const { results, isFresh } = this.props
 
+    // TODO add dark mode
+
     return (
       <>
         <div className='header'>
@@ -149,6 +154,7 @@ class App extends React.Component<IAppProps, IAppState> {
               {props => (
                 <form onSubmit={props.handleSubmit}>
                   <h2>Word Finder for Wordle</h2>
+                  <h4>Letters in the correct position</h4>
                   {[...Array(5)].map((e, i) => (
                     <Field
                       name={'letter' + (i + 1)}
@@ -158,13 +164,25 @@ class App extends React.Component<IAppProps, IAppState> {
                       ref={(el: HTMLInputElement) => (this.correct.current[i] = el)}
                       parse={value => (value ? value.toUpperCase() : '')}
                       onFocus={this.handleFocus}
-                      onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, i)}
-                      onInput={(e: SyntheticEvent) => this.handleInput(e, i)}
+                      onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, i, 'correct')}
+                      onInput={(e: SyntheticEvent) => this.handleInput(e, i, 'correct')}
                     />
                   ))}
-                  <br />
-                  <br />
-                  {/* TODO add labels explaining */}
+                  <h4>Letters in any position</h4>
+                  {[...Array(5)].map((e, i) => (
+                    <Field
+                      name={'anyPosLetter' + (i + 1)}
+                      component='input'
+                      maxLength='1'
+                      key={i}
+                      ref={(el: HTMLInputElement) => (this.anyPos.current[i] = el)}
+                      parse={value => (value ? value.toUpperCase() : '')}
+                      onFocus={this.handleFocus}
+                      onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, i, 'anyPos')}
+                      onInput={(e: SyntheticEvent) => this.handleInput(e, i, 'anyPos')}
+                    />
+                  ))}
+                  <h4>Letters not in answer</h4>
                   {[...Array(this.notBoxes)].map((e, i) => {
                     return !this.show[i] ? null : (
                       <Field

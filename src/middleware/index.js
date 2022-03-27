@@ -3,6 +3,8 @@ import words from '../constants'
 
 const findResults = (store, action) => {
   const values = action.values
+
+  // letters in the correct position
   let searchTerm = ''
   const regex = '[A-Z]'
   for (let i = 1; i < 6; i++) {
@@ -10,6 +12,14 @@ const findResults = (store, action) => {
     searchTerm += val && val !== ' ' ? val : regex
   }
 
+  // letters in any position
+  let allLetters = []
+  for (let i = 1; i < 6; i++) {
+    const val = values['anyPosLetter' + i]
+    if (val && val !== ' ') allLetters.push(val)
+  }
+
+  // letters not in the solution
   let exclusion = ''
   let n = 1
   while (true) {
@@ -22,7 +32,16 @@ const findResults = (store, action) => {
   }
   exclusion = exclusion.length === 0 ? '["]' : '[' + exclusion + ']'
 
-  const results = words.filter(word => word.match(searchTerm) && !word.match(exclusion)).slice(0, 500)
+  //TODO handle case where there are no more of a particular letter
+
+  const results = words
+    .filter(
+      word =>
+        word.match(searchTerm) &&
+        !word.match(exclusion) &&
+        !allLetters.map(letter => word.includes(letter)).includes(false)
+    )
+    .slice(0, 500)
   store.dispatch(updateResults(results))
 }
 
