@@ -1,12 +1,13 @@
 import React, { createRef, SyntheticEvent } from 'react'
 import './App.css'
-import { Field, Form } from 'react-final-form'
+import { Field, Form, FormRenderProps } from 'react-final-form'
 import pluralize from 'pluralize'
 import * as actions from './actions'
 import { connect } from 'react-redux'
 
 interface IAppProps {
   findResults: Function
+  resetResults: Function
   results: Array<string>
   isFresh: boolean
 }
@@ -30,6 +31,19 @@ class App extends React.Component<IAppProps, IAppState> {
     this.incorrect.current = []
     this.show = new Array(true)
     this.notBoxes = 1
+  }
+
+  reset = (props: FormRenderProps<object, object>) => {
+    const { resetResults } = this.props
+    this.correct.current = []
+    this.anyPos.current = []
+    this.incorrect.current = []
+    this.show = new Array(true)
+    this.notBoxes = 1
+    // TODO maybe try to improve this implementation by
+    props.form.reset()
+    resetResults()
+    this.forceUpdate()
   }
 
   handleFocus = (event: SyntheticEvent) => (event.target as HTMLInputElement).select()
@@ -138,8 +152,10 @@ class App extends React.Component<IAppProps, IAppState> {
 
   render() {
     const { results, isFresh } = this.props
+    const date = new Date()
 
     // TODO add dark mode
+    // TODO now that the keys are different, see if we can change the implementation method
 
     return (
       <>
@@ -160,7 +176,7 @@ class App extends React.Component<IAppProps, IAppState> {
                       name={'letter' + (i + 1)}
                       component='input'
                       maxLength='1'
-                      key={i}
+                      key={i + ' ' + date.getTime()}
                       ref={(el: HTMLInputElement) => (this.correct.current[i] = el)}
                       parse={value => (value ? value.toUpperCase() : '')}
                       onFocus={this.handleFocus}
@@ -174,7 +190,7 @@ class App extends React.Component<IAppProps, IAppState> {
                       name={'anyPosLetter' + (i + 1)}
                       component='input'
                       maxLength='1'
-                      key={i}
+                      key={i + ' ' + date.getTime()}
                       ref={(el: HTMLInputElement) => (this.anyPos.current[i] = el)}
                       parse={value => (value ? value.toUpperCase() : '')}
                       onFocus={this.handleFocus}
@@ -189,7 +205,7 @@ class App extends React.Component<IAppProps, IAppState> {
                         name={'notLetter' + (i + 1)}
                         component='input'
                         maxLength='1'
-                        key={i}
+                        key={i + ' ' + date.getTime()}
                         ref={(el: HTMLInputElement) => (this.incorrect.current[i] = el)}
                         parse={value => (value ? value.toUpperCase() : '')}
                         onFocus={this.handleFocus}
@@ -199,8 +215,13 @@ class App extends React.Component<IAppProps, IAppState> {
                     )
                   })}
                   <br />
-                  <button type='submit'>Search</button>
-                  {/* TODO add reset button */}
+                  <button type='submit' className='search-button'>
+                    Search
+                  </button>
+                  <br />
+                  <button onClick={() => this.reset(props)} type='button' className='reset-button'>
+                    Reset
+                  </button>
                 </form>
               )}
             </Form>

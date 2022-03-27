@@ -1,6 +1,7 @@
 export const actionTypes = {
   FIND_RESULTS: 'FIND_RESULTS',
-  UPDATE_RESULTS: 'UPDATE_RESULTS'
+  UPDATE_RESULTS: 'UPDATE_RESULTS',
+  RESET_RESULTS: 'RESET_RESULTS'
 }
 
 export const findResults = values => {
@@ -16,5 +17,11 @@ export const updateResults = results => {
     payload: {
       results
     }
+  }
+}
+
+export const resetResults = () => {
+  return {
+    type: actionTypes.RESET_RESULTS
   }
 }
