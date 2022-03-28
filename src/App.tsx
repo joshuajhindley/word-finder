@@ -145,7 +145,7 @@ class App extends React.Component<IAppProps, IAppState> {
     return (
       <div className='matches'>
         <label>
-          Showing {results.length === 500 ? 'first' : ''}
+          Showing {results.length === 500 ? 'first ' : ''}
           {pluralize('matching word', results.length, true)}.
         </label>
       </div>
@@ -156,7 +156,6 @@ class App extends React.Component<IAppProps, IAppState> {
     const { results, isFresh } = this.props
 
     // TODO add dark mode
-    // TODO now that the keys are different, see if we can change the implementation method
 
     return (
       <>
@@ -228,7 +227,6 @@ class App extends React.Component<IAppProps, IAppState> {
             </Form>
           </div>
           <div className='results'>
-            {/* TODO check whether 500 are showing */}
             {!isFresh && this.getNumberOfResults()}
             {results.map((result: string, index: number) => (
               <div className='result' key={index}>
