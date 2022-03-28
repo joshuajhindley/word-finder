@@ -40,7 +40,6 @@ class App extends React.Component<IAppProps, IAppState> {
     this.incorrect.current = []
     this.show = new Array(true)
     this.notBoxes = 1
-    // TODO maybe try to improve this implementation by
     props.form.reset()
     resetResults()
     this.forceUpdate()
@@ -145,14 +144,16 @@ class App extends React.Component<IAppProps, IAppState> {
 
     return (
       <div className='matches'>
-        <label>Showing {pluralize('matching word', results.length, true)}.</label>
+        <label>
+          Showing {results.length === 500 ? 'first' : ''}
+          {pluralize('matching word', results.length, true)}.
+        </label>
       </div>
     )
   }
 
   render() {
     const { results, isFresh } = this.props
-    const date = new Date()
 
     // TODO add dark mode
     // TODO now that the keys are different, see if we can change the implementation method
@@ -176,7 +177,7 @@ class App extends React.Component<IAppProps, IAppState> {
                       name={'letter' + (i + 1)}
                       component='input'
                       maxLength='1'
-                      key={i + ' ' + date.getTime()}
+                      key={i}
                       ref={(el: HTMLInputElement) => (this.correct.current[i] = el)}
                       parse={value => (value ? value.toUpperCase() : '')}
                       onFocus={this.handleFocus}
@@ -190,7 +191,7 @@ class App extends React.Component<IAppProps, IAppState> {
                       name={'anyPosLetter' + (i + 1)}
                       component='input'
                       maxLength='1'
-                      key={i + ' ' + date.getTime()}
+                      key={i}
                       ref={(el: HTMLInputElement) => (this.anyPos.current[i] = el)}
                       parse={value => (value ? value.toUpperCase() : '')}
                       onFocus={this.handleFocus}
@@ -205,7 +206,7 @@ class App extends React.Component<IAppProps, IAppState> {
                         name={'notLetter' + (i + 1)}
                         component='input'
                         maxLength='1'
-                        key={i + ' ' + date.getTime()}
+                        key={i}
                         ref={(el: HTMLInputElement) => (this.incorrect.current[i] = el)}
                         parse={value => (value ? value.toUpperCase() : '')}
                         onFocus={this.handleFocus}
@@ -227,6 +228,7 @@ class App extends React.Component<IAppProps, IAppState> {
             </Form>
           </div>
           <div className='results'>
+            {/* TODO check whether 500 are showing */}
             {!isFresh && this.getNumberOfResults()}
             {results.map((result: string, index: number) => (
               <div className='result' key={index}>
