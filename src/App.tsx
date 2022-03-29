@@ -165,7 +165,11 @@ class App extends React.Component<IAppProps, IAppState> {
     const { results, isFresh } = this.props
 
     // TODO add dark mode
+    // TODO add tests
     // TODO update package.json
+    // - remove unused dependencies
+    // - use devDependencies
+    // TODO update README.md
 
     return (
       <>
