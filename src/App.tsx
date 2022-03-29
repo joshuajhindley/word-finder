@@ -45,7 +45,10 @@ class App extends React.Component<IAppProps, IAppState> {
     this.forceUpdate()
   }
 
-  handleFocus = (event: SyntheticEvent) => (event.target as HTMLInputElement).select()
+  handleFocus = (event: SyntheticEvent) => {
+    ;(event.target as HTMLInputElement).select()
+    window.scrollTo({ top: 100, behavior: 'smooth' })
+  }
 
   handleKeyUp = (event: SyntheticEvent, pos: number, ref: 'correct' | 'anyPos') => {
     const key = (event.nativeEvent as KeyboardEvent).key
@@ -105,6 +108,11 @@ class App extends React.Component<IAppProps, IAppState> {
       this[ref].current[pos].value = ''
     } else if (pos + 1 < this[ref].current.length) {
       this[ref].current[pos + 1].focus()
+    } else {
+      setTimeout(() => {
+        this[ref].current[pos].blur()
+        this[ref].current[pos].focus()
+      }, 0)
     }
   }
 
@@ -129,6 +137,7 @@ class App extends React.Component<IAppProps, IAppState> {
   handleSubmit = (values: object, form: any) => {
     const { findResults } = this.props
     findResults(values)
+    this.incorrect.current[this.notBoxes - 1].blur()
   }
 
   getNumberOfResults = () => {
@@ -156,6 +165,7 @@ class App extends React.Component<IAppProps, IAppState> {
     const { results, isFresh } = this.props
 
     // TODO add dark mode
+    // TODO update package.json
 
     return (
       <>
@@ -168,7 +178,7 @@ class App extends React.Component<IAppProps, IAppState> {
           <div className='search'>
             <Form onSubmit={this.handleSubmit}>
               {props => (
-                <form onSubmit={props.handleSubmit}>
+                <form autoComplete='off' onSubmit={props.handleSubmit}>
                   <h2>Word Finder for Wordle</h2>
                   <h4>Letters in the correct position</h4>
                   {[...Array(5)].map((e, i) => (
