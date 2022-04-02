@@ -23,7 +23,17 @@ const results = (state = [], action) => {
   }
 }
 
+const darkMode = (state = true, action) => {
+  switch (action.type) {
+    case actionTypes.INVERT_COLOR_MODE:
+      return !state
+    default:
+      return state
+  }
+}
+
 const reducers = {
+  darkMode,
   isFresh,
   results
 }

@@ -1,15 +1,18 @@
 import React, { createRef, SyntheticEvent } from 'react'
-import './App.css'
+import './App.scss'
 import { Field, Form, FormRenderProps } from 'react-final-form'
 import pluralize from 'pluralize'
 import * as actions from './actions'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 
 interface IAppProps {
+  invertColorMode: Function
   findResults: Function
   resetResults: Function
   results: Array<string>
   isFresh: boolean
+  darkMode: boolean
 }
 
 interface IAppState {}
@@ -140,6 +143,11 @@ class App extends React.Component<IAppProps, IAppState> {
     this.incorrect.current[this.notBoxes - 1].blur()
   }
 
+  handleColorChange = () => {
+    const { invertColorMode } = this.props
+    invertColorMode()
+  }
+
   getNumberOfResults = () => {
     const { results } = this.props
 
@@ -162,9 +170,13 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   render() {
-    const { results, isFresh } = this.props
+    const { results, isFresh, darkMode } = this.props
 
-    // TODO add dark mode
+    const colorDiv = classNames({
+      dark: darkMode
+    })
+
+    // TODO add help (?) button - how to use
     // TODO add tests
     // TODO update package.json
     // - remove unused dependencies
@@ -172,13 +184,14 @@ class App extends React.Component<IAppProps, IAppState> {
     // TODO update README.md
 
     return (
-      <>
+      <div className={`app ${colorDiv}`}>
         <div className='header'>
-          <a href='/'>
-            <button>{'< Home'}</button>
+          <a href='/' tabIndex={-1}>
+            <button tabIndex={-1}>{'< Home'}</button>
           </a>
+          <div className={`color ${colorDiv}`} onClick={this.handleColorChange} tabIndex={1} />
         </div>
-        <div className='App'>
+        <div className='body'>
           <div className='search'>
             <Form onSubmit={this.handleSubmit}>
               {props => (
@@ -249,7 +262,7 @@ class App extends React.Component<IAppProps, IAppState> {
             ))}
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }
@@ -257,6 +270,7 @@ class App extends React.Component<IAppProps, IAppState> {
 const { actionTypes, ...action } = actions
 const mapStateToProps = (state: any) => {
   return {
+    darkMode: state.darkMode,
     isFresh: state.isFresh,
     results: state.results
   }
