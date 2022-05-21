@@ -32,10 +32,20 @@ const darkMode = (state = true, action) => {
   }
 }
 
+const showHelp = (state = false, action) => {
+  switch (action.type) {
+    case actionTypes.TOGGLE_HELP:
+      return action.value
+    default:
+      return state
+  }
+}
+
 const reducers = {
   darkMode,
   isFresh,
-  results
+  results,
+  showHelp
 }
 
 export const rootReducer = combineReducers(reducers)

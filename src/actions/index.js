@@ -2,7 +2,8 @@ export const actionTypes = {
   FIND_RESULTS: 'FIND_RESULTS',
   UPDATE_RESULTS: 'UPDATE_RESULTS',
   RESET_RESULTS: 'RESET_RESULTS',
-  INVERT_COLOR_MODE: 'INVERT_COLOR_MODE'
+  INVERT_COLOR_MODE: 'INVERT_COLOR_MODE',
+  TOGGLE_HELP: 'TOGGLE_HELP'
 }
 
 export const findResults = values => {
@@ -30,5 +31,12 @@ export const updateResults = results => {
 export const resetResults = () => {
   return {
     type: actionTypes.RESET_RESULTS
+  }
+}
+
+export const toggleHelp = value => {
+  return {
+    type: actionTypes.TOGGLE_HELP,
+    value
   }
 }

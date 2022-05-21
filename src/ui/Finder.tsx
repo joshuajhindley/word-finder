@@ -1,23 +1,10 @@
 import React, { createRef, SyntheticEvent } from 'react'
-import './App.scss'
+import '../styles/Finder.scss'
 import { Field, Form, FormRenderProps } from 'react-final-form'
 import pluralize from 'pluralize'
-import * as actions from './actions'
-import { connect } from 'react-redux'
 import classNames from 'classnames'
 
-interface IAppProps {
-  invertColorMode: Function
-  findResults: Function
-  resetResults: Function
-  results: Array<string>
-  isFresh: boolean
-  darkMode: boolean
-}
-
-interface IAppState {}
-
-class App extends React.Component<IAppProps, IAppState> {
+class Finder extends React.Component<any, any> {
   correct: React.MutableRefObject<Array<HTMLInputElement>>
   anyPos: React.MutableRefObject<Array<HTMLInputElement>>
   incorrect: React.MutableRefObject<Array<HTMLInputElement>>
@@ -36,15 +23,16 @@ class App extends React.Component<IAppProps, IAppState> {
     this.notBoxes = 1
   }
 
-  reset = (props: FormRenderProps<object, object>) => {
-    const { resetResults } = this.props
+  reset = (formProps: FormRenderProps<object, object>) => {
+    const { actions } = this.props
+
     this.correct.current = []
     this.anyPos.current = []
     this.incorrect.current = []
     this.show = new Array(true)
     this.notBoxes = 1
-    props.form.reset()
-    resetResults()
+    formProps.form.reset()
+    actions.resetResults()
     this.forceUpdate()
   }
 
@@ -138,14 +126,14 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   handleSubmit = (values: object, form: any) => {
-    const { findResults } = this.props
-    findResults(values)
+    const { actions } = this.props
+    actions.findResults(values)
     this.incorrect.current[this.notBoxes - 1].blur()
   }
 
   handleColorChange = () => {
-    const { invertColorMode } = this.props
-    invertColorMode()
+    const { actions } = this.props
+    actions.invertColorMode()
   }
 
   getNumberOfResults = () => {
@@ -170,18 +158,16 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   render() {
-    const { results, isFresh, darkMode } = this.props
+    const { results, isFresh, darkMode, actions } = this.props
 
     const colorDiv = classNames({
       dark: darkMode
     })
 
-    // TODO add help (?) button - how to use
     // TODO add tests
-    // TODO update package.json
-    // - remove unused dependencies
-    // - use devDependencies
-    // TODO update README.md
+    // TODO remove words from word list
+    // TODO add more SCSS variables
+    // TODO add go to top button
 
     return (
       <div className={`app ${colorDiv}`}>
@@ -189,13 +175,16 @@ class App extends React.Component<IAppProps, IAppState> {
           <a href='/' tabIndex={-1}>
             <button tabIndex={-1}>{'< Home'}</button>
           </a>
+          <div className={`help-message ${colorDiv}`} onClick={() => actions.toggleHelp(true)}>
+            <span>?</span>
+          </div>
           <div className={`color ${colorDiv}`} onClick={this.handleColorChange} tabIndex={1} />
         </div>
         <div className='body'>
           <div className='search'>
             <Form onSubmit={this.handleSubmit}>
-              {props => (
-                <form autoComplete='off' onSubmit={props.handleSubmit}>
+              {formProps => (
+                <form autoComplete='off' onSubmit={formProps.handleSubmit}>
                   <h2>Word Finder for Wordle</h2>
                   <h4>Letters in the correct position</h4>
                   {[...Array(5)].map((e, i) => (
@@ -246,7 +235,7 @@ class App extends React.Component<IAppProps, IAppState> {
                     Search
                   </button>
                   <br />
-                  <button onClick={() => this.reset(props)} type='button' className='reset-button'>
+                  <button onClick={() => this.reset(formProps)} type='button' className='reset-button'>
                     Reset
                   </button>
                 </form>
@@ -267,13 +256,4 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 }
 
-const { actionTypes, ...action } = actions
-const mapStateToProps = (state: any) => {
-  return {
-    darkMode: state.darkMode,
-    isFresh: state.isFresh,
-    results: state.results
-  }
-}
-
-export default connect(mapStateToProps, action)(App)
+export default Finder
