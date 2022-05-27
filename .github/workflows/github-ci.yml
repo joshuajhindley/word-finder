@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: "github.event.head_commit.message != 'Bump package version'"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -26,3 +27,13 @@ jobs:
           cmd: test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
+      - name: Bump package version and add tag
+        run: |
+          git config user.name = "Version Manager Bot"
+          git config user.email = "<>"
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: bump patch -m "Bump package version"
+      - run: VERSION=$(node -p "require('./package.json').version")
+      - run: git tag ${VERSION}
+      - run: git push --follow-tags origin master

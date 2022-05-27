@@ -59,7 +59,8 @@
     "test": "jest --coverage --colors",
     "eject": "react-scripts eject",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "bump": "npm version"
   },
   "engines": {
     "node": ">=16"
