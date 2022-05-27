@@ -85,27 +85,6 @@ $font-family: Roboto, sans-serif;
     transition: all 0.5s linear;
   }
 
-  &.dark {
-    background-color: $dark-color;
-    color: $light-color;
-    transition: all 0.5s linear;
-
-    button {
-      background-color: $dark-color;
-      color: $light-color;
-      transition: all 0.5s linear;
-    }
-
-    .body .search {
-      button {
-        border: 2px solid $light-color;
-      }
-      input {
-        border-color: $dark-color;
-      }
-    }
-  }
-
   .header {
     height: 50px;
     align-content: center;
@@ -168,6 +147,7 @@ $font-family: Roboto, sans-serif;
 
     .search {
       cursor: default;
+
       h2 {
         margin-top: 20px;
       }
@@ -227,6 +207,28 @@ $font-family: Roboto, sans-serif;
         label {
           cursor: text;
         }
+      }
+    }
+  }
+
+  &.dark {
+    background-color: $dark-color;
+    color: $light-color;
+    transition: all 0.5s linear;
+
+    button {
+      background-color: $dark-color;
+      color: $light-color;
+      transition: all 0.5s linear;
+    }
+
+    .body .search {
+      button {
+        border: 2px solid $light-color;
+      }
+
+      input {
+        border-color: $dark-color;
       }
     }
   }

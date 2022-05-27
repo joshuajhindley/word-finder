@@ -61,6 +61,9 @@
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build"
   },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "babel": {
     "presets": [
       "@babel/preset-env"
