@@ -10,13 +10,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Generate build
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: build
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Run tests
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
