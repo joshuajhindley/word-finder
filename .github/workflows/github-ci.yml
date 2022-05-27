@@ -1,0 +1,22 @@
+name: build
+on:
+  push:
+    branches: master
+  pull-request:
+    branches: master
+
+jobs:
+  build:
+    name: Word Finder continuous integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install
+     - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: test
