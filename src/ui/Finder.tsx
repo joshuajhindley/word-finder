@@ -42,7 +42,11 @@ class Finder extends React.Component<any, any> {
     window.scrollTo({ top: 100, behavior: 'smooth' })
   }
 
-  handleKeyUp = (event: SyntheticEvent, pos: number, ref: 'correct' | 'anyPos') => {
+  handleKeyUp = (event: SyntheticEvent, pos: number, ref: 'correct' | 'anyPos' | 'incorrect') => {
+    if (ref === 'incorrect') {
+      this.handleNotKeyUp(event, pos)
+      return
+    }
     const key = (event.nativeEvent as KeyboardEvent).key
     if (pos > 0 && ['Backspace', 'Delete', 'ArrowLeft'].includes(key)) {
       this[ref].current[pos - 1].focus()
@@ -94,7 +98,12 @@ class Finder extends React.Component<any, any> {
     }
   }
 
-  handleInput = (event: SyntheticEvent, pos: number, ref: 'correct' | 'anyPos') => {
+  handleInput = (event: SyntheticEvent, pos: number, ref: 'correct' | 'anyPos' | 'incorrect') => {
+    if (ref === 'incorrect') {
+      this.handleNotInput(event, pos)
+      return
+    }
+
     // only allow letters
     if (!/^[A-Za-z]$/.test(this[ref].current[pos].value)) {
       this[ref].current[pos].value = ''
@@ -117,8 +126,9 @@ class Finder extends React.Component<any, any> {
 
     // do not add the letter if there is already the same letter in another box
     const found =
-      this.correct.current.find(input => input.value === this.incorrect.current[pos].value.toUpperCase()) ||
-      this.anyPos.current.find(input => input.value === this.incorrect.current[pos].value.toUpperCase()) ||
+      this.correct.current
+        .concat(this.anyPos.current)
+        .find(input => input.value === this.incorrect.current[pos].value.toUpperCase()) ||
       this.incorrect.current.find((input, index) => {
         return this.show[index] && input.value === this.incorrect.current[pos].value.toUpperCase() && index !== pos
       })
@@ -170,6 +180,50 @@ class Finder extends React.Component<any, any> {
     )
   }
 
+  renderField(name: string, index: number, type: 'correct' | 'anyPos' | 'incorrect') {
+    return (
+      <Field
+        name={name}
+        component='input'
+        maxLength='1'
+        key={index}
+        ref={(el: HTMLInputElement) => (this[type].current[index] = el)}
+        parse={value => (value ? value.toUpperCase() : '')}
+        onFocus={this.handleFocus}
+        onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, index, type)}
+        onInput={(e: SyntheticEvent) => this.handleInput(e, index, type)}
+      />
+    )
+  }
+
+  renderForm() {
+    return (
+      <Form onSubmit={this.handleSubmit}>
+        {formProps => (
+          <form autoComplete='off' onSubmit={formProps.handleSubmit}>
+            <h2>Word Finder for Wordle</h2>
+            <h4>Letters in the correct position</h4>
+            {[...Array(5)].map((e, i) => this.renderField('letter' + (i + 1), i, 'correct'))}
+            <h4>Letters in any position</h4>
+            {[...Array(5)].map((e, i) => this.renderField('anyPosLetter' + (i + 1), i, 'anyPos'))}
+            <h4>Letters not in answer</h4>
+            {[...Array(this.notBoxes)].map((e, i) => {
+              return !this.show[i] ? null : this.renderField('notLetter' + (i + 1), i, 'incorrect')
+            })}
+            <br />
+            <button type='submit' className='search-button'>
+              Search
+            </button>
+            <br />
+            <button onClick={() => this.reset(formProps)} type='button' className='reset-button'>
+              Reset
+            </button>
+          </form>
+        )}
+      </Form>
+    )
+  }
+
   render() {
     const { results, isFresh, darkMode, actions } = this.props
 
@@ -189,67 +243,7 @@ class Finder extends React.Component<any, any> {
           <div className={`color ${colorDiv}`} onClick={this.handleColorChange} tabIndex={1} />
         </div>
         <div className='body'>
-          <div className='search'>
-            <Form onSubmit={this.handleSubmit}>
-              {formProps => (
-                <form autoComplete='off' onSubmit={formProps.handleSubmit}>
-                  <h2>Word Finder for Wordle</h2>
-                  <h4>Letters in the correct position</h4>
-                  {[...Array(5)].map((e, i) => (
-                    <Field
-                      name={'letter' + (i + 1)}
-                      component='input'
-                      maxLength='1'
-                      key={i}
-                      ref={(el: HTMLInputElement) => (this.correct.current[i] = el)}
-                      parse={value => (value ? value.toUpperCase() : '')}
-                      onFocus={this.handleFocus}
-                      onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, i, 'correct')}
-                      onInput={(e: SyntheticEvent) => this.handleInput(e, i, 'correct')}
-                    />
-                  ))}
-                  <h4>Letters in any position</h4>
-                  {[...Array(5)].map((e, i) => (
-                    <Field
-                      name={'anyPosLetter' + (i + 1)}
-                      component='input'
-                      maxLength='1'
-                      key={i}
-                      ref={(el: HTMLInputElement) => (this.anyPos.current[i] = el)}
-                      parse={value => (value ? value.toUpperCase() : '')}
-                      onFocus={this.handleFocus}
-                      onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, i, 'anyPos')}
-                      onInput={(e: SyntheticEvent) => this.handleInput(e, i, 'anyPos')}
-                    />
-                  ))}
-                  <h4>Letters not in answer</h4>
-                  {[...Array(this.notBoxes)].map((e, i) => {
-                    return !this.show[i] ? null : (
-                      <Field
-                        name={'notLetter' + (i + 1)}
-                        component='input'
-                        maxLength='1'
-                        key={i}
-                        ref={(el: HTMLInputElement) => (this.incorrect.current[i] = el)}
-                        parse={value => (value ? value.toUpperCase() : '')}
-                        onFocus={this.handleFocus}
-                        onKeyUp={(e: SyntheticEvent) => this.handleNotKeyUp(e, i)}
-                        onInput={(e: SyntheticEvent) => this.handleNotInput(e, i)}
-                      />
-                    )
-                  })}
-                  <br />
-                  <button type='submit' className='search-button'>
-                    Search
-                  </button>
-                  <br />
-                  <button onClick={() => this.reset(formProps)} type='button' className='reset-button'>
-                    Reset
-                  </button>
-                </form>
-              )}
-            </Form>
-          </div>
+          <div className='search'>{this.renderForm()}</div>
           <div className='results'>
             {!isFresh && this.getNumberOfResults()}
             {results.map((result: string, index: number) => (

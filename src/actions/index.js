@@ -13,13 +13,11 @@ export const actionCreators = {
       values
     }
   },
-
   invertColorMode: () => {
     return {
       type: actionTypes.INVERT_COLOR_MODE
     }
   },
-
   updateResults: results => {
     return {
       type: actionTypes.UPDATE_RESULTS,
@@ -28,13 +26,11 @@ export const actionCreators = {
       }
     }
   },
-
   resetResults: () => {
     return {
       type: actionTypes.RESET_RESULTS
     }
   },
-
   toggleHelp: value => {
     return {
       type: actionTypes.TOGGLE_HELP,

@@ -1,36 +1,44 @@
 import actionTypes, { actionCreators } from '../actions'
 import words from '../constants'
 
-const findResults = (store, action) => {
-  const values = action.values
-
+const findCorrectPosLetters = values => {
   // letters in the correct position
   let searchTerm = ''
   const regex = '[A-Z]'
   for (let i = 1; i < 6; i++) {
     const val = values['letter' + i]
-    searchTerm += val && val !== ' ' ? val : regex
+    searchTerm += val ? val : regex
   }
+  return searchTerm
+}
 
+const findAnyPosLetters = values => {
   // letters in any position
   let allLetters = []
   for (let i = 1; i < 6; i++) {
     const val = values['anyPosLetter' + i]
-    if (val && val !== ' ') allLetters.push(val)
+    if (val) allLetters.push(val)
   }
+  return allLetters
+}
 
+const findExclusionLetters = values => {
   // letters not in the solution
   let exclusion = ''
-  let n = 1
-  while (true) {
-    const letter = values['notLetter' + n]
-    if (letter === undefined) {
-      break
-    }
-    exclusion += letter
-    n++
-  }
-  exclusion = exclusion.length === 0 ? '["]' : '[' + exclusion + ']'
+  Object.getOwnPropertyNames(values)
+    .filter(value => value.startsWith('notLetter'))
+    .forEach(value => {
+      exclusion += values[value]
+    })
+  return exclusion.length === 0 ? '["]' : '[' + exclusion + ']'
+}
+
+const findResults = (store, action) => {
+  const values = action.values
+
+  const searchTerm = findCorrectPosLetters(values)
+  const allLetters = findAnyPosLetters(values)
+  const exclusion = findExclusionLetters(values)
 
   const results = words
     .filter(
