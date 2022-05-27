@@ -1,9 +1,7 @@
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+import { actionCreators } from '../actions'
 import Children from '../ui/Children'
-
-const { actionTypes, ...actionCreators } = actions
 
 const mapStateToProps = (state: any) => {
   const { darkMode, isFresh, results, showHelp } = state
@@ -18,7 +16,7 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    actions: bindActionCreators(actionCreators as unknown as ActionCreatorsMapObject, dispatch)
+    actions: bindActionCreators(actionCreators as ActionCreatorsMapObject, dispatch)
   }
 }
 

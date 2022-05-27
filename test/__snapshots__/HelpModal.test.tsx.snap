@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests the HelpModal component matches the snapshot 1`] = `
+<Modal
+  ariaHideApp={false}
+  bodyOpenClassName="ReactModal__Body--open"
+  className="help-modal "
+  closeTimeoutMS={0}
+  contentElement={[Function]}
+  isOpen={false}
+  onRequestClose={[Function]}
+  overlayClassName="modal-overlay"
+  overlayElement={[Function]}
+  parentSelector={[Function]}
+  portalClassName="ReactModalPortal"
+  preventScroll={false}
+  role="dialog"
+  shouldCloseOnEsc={true}
+  shouldCloseOnOverlayClick={true}
+  shouldFocusAfterRender={true}
+  shouldReturnFocusAfterClose={true}
+>
+  <div
+    className="modal-content"
+  >
+    <div
+      className="help-modal-header"
+    >
+      <div
+        className="help-modal-header-title"
+      >
+        <h1>
+          Help
+        </h1>
+      </div>
+      <div
+        className="help-modal-header-close"
+        onClick={[Function]}
+      >
+        <h1>
+          x
+        </h1>
+      </div>
+    </div>
+    <div
+      className="help-modal-body"
+    >
+      <p>
+        This is a simple tool to help you find the correct word in a Wordle game.
+        <br />
+        <br />
+        There are three rows of input boxes.
+        <br />
+        The first row are letters in the correct position.
+        <br />
+        These are the green letters in your Wordle game.
+        <br />
+        <br />
+        The second row are letters that are in the final word, but are in the wrong position.
+        <br />
+        These are the yellow letters in your Wordle game.
+        <br />
+        <br />
+        The third row are letters that are not in the word.
+        <br />
+        These are the grey letters in your Wordle game.
+        <br />
+        New input boxes are added to this row automatically as you add letters.
+        <br />
+        <br />
+        You can use the 'search' button to find the first 500 words that match the letters you've entered and can reset the input boxes by tapping the 'reset' button.
+      </p>
+    </div>
+  </div>
+</Modal>
+`;

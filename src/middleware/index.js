@@ -1,4 +1,4 @@
-import { actionTypes, updateResults } from '../actions'
+import actionTypes, { actionCreators } from '../actions'
 import words from '../constants'
 
 const findResults = (store, action) => {
@@ -32,8 +32,6 @@ const findResults = (store, action) => {
   }
   exclusion = exclusion.length === 0 ? '["]' : '[' + exclusion + ']'
 
-  //TODO handle case where there are no more of a particular letter
-
   const results = words
     .filter(
       word =>
@@ -42,7 +40,8 @@ const findResults = (store, action) => {
         !allLetters.map(letter => word.includes(letter)).includes(false)
     )
     .slice(0, 500)
-  store.dispatch(updateResults(results))
+
+  store.dispatch(actionCreators.updateResults(results))
 }
 
 export const middleware = store => next => action => {

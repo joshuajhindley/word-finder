@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests the ScrollToTop component matches the snapshot 1`] = `
+<ScrollToTop>
+  <ScrollIcon
+    className="scroll-to-top"
+    toggleVisibility={[Function]}
+  >
+    <div
+      className="scroll-to-top"
+      onClick={[Function]}
+    >
+      <BiArrowFromBottom>
+        <IconBase
+          attr={
+            Object {
+              "viewBox": "0 0 24 24",
+            }
+          }
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            strokeWidth="0"
+            style={
+              Object {
+                "color": undefined,
+              }
+            }
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 18h12v2H6zm6-14.414-6.707 6.707 1.414 1.414L11 7.414V16h2V7.414l4.293 4.293 1.414-1.414z"
+              key="0"
+            />
+          </svg>
+        </IconBase>
+      </BiArrowFromBottom>
+    </div>
+  </ScrollIcon>
+</ScrollToTop>
+`;

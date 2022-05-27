@@ -3,6 +3,7 @@ import '../styles/Finder.scss'
 import { Field, Form, FormRenderProps } from 'react-final-form'
 import pluralize from 'pluralize'
 import classNames from 'classnames'
+import { BsFillQuestionSquareFill } from 'react-icons/bs'
 
 class Finder extends React.Component<any, any> {
   correct: React.MutableRefObject<Array<HTMLInputElement>>
@@ -45,7 +46,7 @@ class Finder extends React.Component<any, any> {
     const key = (event.nativeEvent as KeyboardEvent).key
     if (pos > 0 && ['Backspace', 'Delete', 'ArrowLeft'].includes(key)) {
       this[ref].current[pos - 1].focus()
-    } else if (pos < this[ref].current.length && key === 'ArrowRight') {
+    } else if (pos + 1 < this[ref].current.length && key === 'ArrowRight') {
       this[ref].current[pos + 1].focus()
     }
   }
@@ -109,8 +110,20 @@ class Finder extends React.Component<any, any> {
 
   handleNotInput = (event: SyntheticEvent, pos: number) => {
     //only allow letters
-    //TODO maybe disallow already entered letters?
     if (!/^[A-Za-z]$/.test(this.incorrect.current[pos].value)) {
+      this.incorrect.current[pos].value = ''
+      return
+    }
+
+    // do not add the letter if there is already the same letter in another box
+    const found =
+      this.correct.current.find(input => input.value === this.incorrect.current[pos].value.toUpperCase()) ||
+      this.anyPos.current.find(input => input.value === this.incorrect.current[pos].value.toUpperCase()) ||
+      this.incorrect.current.find((input, index) => {
+        return this.show[index] && input.value === this.incorrect.current[pos].value.toUpperCase() && index !== pos
+      })
+
+    if (found) {
       this.incorrect.current[pos].value = ''
       return
     }
@@ -164,11 +177,6 @@ class Finder extends React.Component<any, any> {
       dark: darkMode
     })
 
-    // TODO add tests
-    // TODO remove words from word list
-    // TODO add more SCSS variables
-    // TODO add go to top button
-
     return (
       <div className={`app ${colorDiv}`}>
         <div className='header'>
@@ -176,7 +184,7 @@ class Finder extends React.Component<any, any> {
             <button tabIndex={-1}>{'< Home'}</button>
           </a>
           <div className={`help-message ${colorDiv}`} onClick={() => actions.toggleHelp(true)}>
-            <span>?</span>
+            <BsFillQuestionSquareFill />
           </div>
           <div className={`color ${colorDiv}`} onClick={this.handleColorChange} tabIndex={1} />
         </div>

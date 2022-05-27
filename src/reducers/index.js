@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { actionTypes } from '../actions'
+import actionTypes from '../actions'
 
 const isFresh = (state = true, action) => {
   switch (action.type) {
