@@ -180,19 +180,52 @@ class Finder extends React.Component<any, any> {
     )
   }
 
-  renderField(name: string, index: number, type: 'correct' | 'anyPos' | 'incorrect') {
+  render() {
+    const { darkMode } = this.props
+
+    const colorDiv = classNames({
+      dark: darkMode
+    })
+
     return (
-      <Field
-        name={name}
-        component='input'
-        maxLength='1'
-        key={index}
-        ref={(el: HTMLInputElement) => (this[type].current[index] = el)}
-        parse={value => (value ? value.toUpperCase() : '')}
-        onFocus={this.handleFocus}
-        onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, index, type)}
-        onInput={(e: SyntheticEvent) => this.handleInput(e, index, type)}
-      />
+      <div className={`app ${colorDiv}`}>
+        {this.renderHeader(colorDiv)}
+        {this.renderBody()}
+      </div>
+    )
+  }
+
+  renderHeader(colorDiv: string) {
+    const { actions } = this.props
+
+    return (
+      <div className='header'>
+        <a href='/' tabIndex={-1}>
+          <button tabIndex={-1}>{'< Home'}</button>
+        </a>
+        <div className={`help-message ${colorDiv}`} onClick={() => actions.toggleHelp(true)}>
+          <BsFillQuestionSquareFill />
+        </div>
+        <div className={`color ${colorDiv}`} onClick={this.handleColorChange} tabIndex={1} />
+      </div>
+    )
+  }
+
+  renderBody() {
+    const { results, isFresh } = this.props
+
+    return (
+      <div className='body'>
+        <div className='search'>{this.renderForm()}</div>
+        <div className='results'>
+          {!isFresh && this.getNumberOfResults()}
+          {results.map((result: string, index: number) => (
+            <div className='result' key={index}>
+              <label key={index}>{result}</label>
+            </div>
+          ))}
+        </div>
+      </div>
     )
   }
 
@@ -224,36 +257,19 @@ class Finder extends React.Component<any, any> {
     )
   }
 
-  render() {
-    const { results, isFresh, darkMode, actions } = this.props
-
-    const colorDiv = classNames({
-      dark: darkMode
-    })
-
+  renderField(name: string, index: number, type: 'correct' | 'anyPos' | 'incorrect') {
     return (
-      <div className={`app ${colorDiv}`}>
-        <div className='header'>
-          <a href='/' tabIndex={-1}>
-            <button tabIndex={-1}>{'< Home'}</button>
-          </a>
-          <div className={`help-message ${colorDiv}`} onClick={() => actions.toggleHelp(true)}>
-            <BsFillQuestionSquareFill />
-          </div>
-          <div className={`color ${colorDiv}`} onClick={this.handleColorChange} tabIndex={1} />
-        </div>
-        <div className='body'>
-          <div className='search'>{this.renderForm()}</div>
-          <div className='results'>
-            {!isFresh && this.getNumberOfResults()}
-            {results.map((result: string, index: number) => (
-              <div className='result' key={index}>
-                <label key={index}>{result}</label>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <Field
+        name={name}
+        component='input'
+        maxLength='1'
+        key={index}
+        ref={(el: HTMLInputElement) => (this[type].current[index] = el)}
+        parse={value => (value ? value.toUpperCase() : '')}
+        onFocus={this.handleFocus}
+        onKeyUp={(e: SyntheticEvent) => this.handleKeyUp(e, index, type)}
+        onInput={(e: SyntheticEvent) => this.handleInput(e, index, type)}
+      />
     )
   }
 }
