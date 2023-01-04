@@ -27,14 +27,14 @@ jobs:
           cmd: test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
-      - name: Bump package version and add tag
-        run: |
-          git config user.name "$(git log -n 1 --pretty=format:%an)"
-          git config user.email "$(git log -n 1 --pretty=format:%ae)"
-      - uses: borales/actions-yarn@v4.2.0
-        with:
-          cmd: bump patch -m "Bump package version"
-      - run: |
-          VERSION=$(node -p "require('./package.json').version")
-          git tag ${VERSION}
-          git push --follow-tags origin master
+#       - name: Bump package version and add tag
+#         run: |
+#           git config user.name "$(git log -n 1 --pretty=format:%an)"
+#           git config user.email "$(git log -n 1 --pretty=format:%ae)"
+#       - uses: borales/actions-yarn@v4.2.0
+#         with:
+#           cmd: bump patch -m "Bump package version"
+#       - run: |
+#           VERSION=$(node -p "require('./package.json').version")
+#           git tag ${VERSION}
+#           git push --follow-tags origin master
