@@ -1,6 +1,6 @@
 # Word Finder for Wordle
 
-[![build](https://img.shields.io/github/workflow/status/joshuajhindley/word-finder/build?logo=github)](https://github.com/joshuajhindley/word-finder/actions/workflows/github-ci.yml)
+[![build](https://img.shields.io/github/actions/workflow/status/joshuajhindley/word-finder/github-ci.yml?logo=github&)](https://github.com/joshuajhindley/word-finder/actions/workflows/github-ci.yml)
 [![coverage](https://img.shields.io/codecov/c/github/joshuajhindley/word-finder?logo=codecov&logoColor=#ff69b4)](https://app.codecov.io/gh/joshuajhindley/word-finder)
 [![code quality](https://img.shields.io/codacy/grade/3425dae7068d4ba5a81c87a1814a4be5?logo=codacy)](https://app.codacy.com/gh/joshuajhindley/word-finder/dashboard)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/joshuajhindley/word-finder?logo=code%20climate)](https://codeclimate.com/github/joshuajhindley/word-finder)
