@@ -14,15 +14,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Install dependencies
-        uses: borales/actions-yarn@v2.3.0
+        uses: borales/actions-yarn@v4.2.0
         with:
           cmd: install
       - name: Generate build
-        uses: borales/actions-yarn@v2.3.0
+        uses: borales/actions-yarn@v4.2.0
         with:
           cmd: build
       - name: Run tests
-        uses: borales/actions-yarn@v2.3.0
+        uses: borales/actions-yarn@v4.2.0
         with:
           cmd: test
       - name: Upload coverage to Codecov
@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
-      - uses: borales/actions-yarn@v2.3.0
+      - uses: borales/actions-yarn@v4.2.0
         with:
           cmd: bump patch -m "Bump package version"
       - run: |
