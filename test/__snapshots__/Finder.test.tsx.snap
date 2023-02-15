@@ -8,10 +8,12 @@ exports[`tests the FinderUI component matches the snapshot 1`] = `
       "invertColorMode": [MockFunction],
       "resetResults": [MockFunction],
       "toggleHelp": [MockFunction],
+      "toggleInPosition": [MockFunction],
     }
   }
   darkMode={true}
   isFresh={true}
+  notInPositions={true}
   results={Array []}
 >
   <div
@@ -303,6 +305,29 @@ exports[`tests the FinderUI component matches the snapshot 1`] = `
                 value=""
               />
             </ForwardRef(Field)>
+            <div
+              className="checkbox"
+              onClick={[MockFunction]}
+            >
+              <ForwardRef(Field)
+                checked={true}
+                component="input"
+                name="notInPositions"
+                type="checkbox"
+              >
+                <input
+                  checked={true}
+                  name="notInPositions"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  type="checkbox"
+                />
+              </ForwardRef(Field)>
+              <span>
+                Letters are not in the above positions
+              </span>
+            </div>
             <h4>
               Letters not in answer
             </h4>

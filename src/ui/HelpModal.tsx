@@ -8,7 +8,7 @@ export default class HelpModal extends React.Component<any, any> {
     const { darkMode, showHelp, actions } = this.props
 
     const colorDiv = classNames({
-      dark: darkMode
+      dark: darkMode,
     })
 
     return (
@@ -24,7 +24,10 @@ export default class HelpModal extends React.Component<any, any> {
             <div className='help-modal-header-title'>
               <h1>Help</h1>
             </div>
-            <div className='help-modal-header-close' onClick={() => actions.toggleHelp(false)}>
+            <div
+              className='help-modal-header-close'
+              onClick={() => actions.toggleHelp(false)}
+            >
               <h1>x</h1>
             </div>
           </div>
@@ -37,7 +40,8 @@ export default class HelpModal extends React.Component<any, any> {
   renderMessage() {
     return (
       <p>
-        This is a simple tool to help you find the correct word in a Wordle game.
+        This is a simple tool to help you find the correct word in a Wordle
+        game.
         <br />
         <br />
         There are three rows of input boxes.
@@ -45,8 +49,9 @@ export default class HelpModal extends React.Component<any, any> {
         {this.renderFirstRowInfo()}
         {this.renderSecondRowInfo()}
         {this.renderThirdRowInfo()}
-        You can use the 'search' button to find the first 500 words that match the letters you've entered and can reset
-        the input boxes by tapping the 'reset' button.
+        You can use the &apos;search&apos; button to find the first 500 words
+        that match the letters you&apos;ve entered and can reset the input boxes
+        by tapping the &apos;reset&apos; button.
       </p>
     )
   }
@@ -66,9 +71,15 @@ export default class HelpModal extends React.Component<any, any> {
   renderSecondRowInfo() {
     return (
       <>
-        The second row are letters that are in the final word, but are in the wrong position.
+        The second row are letters that are in the final word, in any position.
         <br />
         These are the yellow letters in your Wordle game.
+        <br />
+        <br />
+        If all of the letters are in the wrong position, you can click the
+        &quot;Letters are not in the above positions&quot; checkbox and only
+        words that contain those letters not in those positions will be returned
+        by the search.
         <br />
         <br />
       </>

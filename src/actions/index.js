@@ -3,7 +3,8 @@ const actionTypes = {
   UPDATE_RESULTS: 'UPDATE_RESULTS',
   RESET_RESULTS: 'RESET_RESULTS',
   INVERT_COLOR_MODE: 'INVERT_COLOR_MODE',
-  TOGGLE_HELP: 'TOGGLE_HELP'
+  TOGGLE_HELP: 'TOGGLE_HELP',
+  TOGGLE_IN_POSITION: 'TOGGLE_IN_POSITION'
 }
 
 export const actionCreators = {
@@ -35,6 +36,11 @@ export const actionCreators = {
     return {
       type: actionTypes.TOGGLE_HELP,
       value
+    }
+  },
+  toggleInPosition: () => {
+    return {
+      type: actionTypes.TOGGLE_IN_POSITION
     }
   }
 }

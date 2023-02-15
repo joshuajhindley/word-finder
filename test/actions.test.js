@@ -23,6 +23,11 @@ describe('tests actionCreators', () => {
     expect(action.type).toEqual(actionTypes.RESET_RESULTS)
   })
 
+  test('toggleInPosition', () => {
+    const action = actionCreators.toggleInPosition()
+    expect(action.type).toEqual(actionTypes.TOGGLE_IN_POSITION)
+  })
+
   test('toggleHelp', () => {
     const action = actionCreators.toggleHelp(true)
     expect(action.type).toEqual(actionTypes.TOGGLE_HELP)

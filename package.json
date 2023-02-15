@@ -1,6 +1,6 @@
 {
   "name": "word-finder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://joshuajhindley.github.io/word-finder",
   "license": "GPL-3.0-only",
   "dependencies": {
@@ -90,6 +90,17 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.spec.js",
+          "**/*.spec.jsx"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
     ]
   },
   "browserslist": {

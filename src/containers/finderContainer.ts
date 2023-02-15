@@ -4,13 +4,14 @@ import { actionCreators } from '../actions'
 import Children from '../ui/Children'
 
 const mapStateToProps = (state: any) => {
-  const { darkMode, isFresh, results, showHelp } = state
+  const { darkMode, isFresh, results, showHelp, notInPositions } = state
 
   return {
     darkMode,
     isFresh,
     results,
-    showHelp
+    showHelp,
+    notInPositions
   }
 }
 
