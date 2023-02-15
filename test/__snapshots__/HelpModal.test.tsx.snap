@@ -56,9 +56,12 @@ exports[`tests the HelpModal component matches the snapshot 1`] = `
         These are the green letters in your Wordle game.
         <br />
         <br />
-        The second row are letters that are in the final word, but are in the wrong position.
+        The second row are letters that are in the final word, in any position.
         <br />
         These are the yellow letters in your Wordle game.
+        <br />
+        <br />
+        If all of the letters are in the wrong position, you can click the "Letters are not in the above positions" checkbox and only words that contain those letters not in those positions will be returned by the search.
         <br />
         <br />
         The third row are letters that are not in the word.

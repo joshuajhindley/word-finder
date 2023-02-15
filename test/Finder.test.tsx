@@ -1,13 +1,14 @@
+import React from 'react'
 import Finder from '../src/ui/Finder'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import userEvent from '@testing-library/user-event'
 
 describe('tests the FinderUI component', () => {
   Object.defineProperty(window, 'scrollTo', {
     writable: true,
-    value: jest.fn().mockImplementation(values => {
+    value: jest.fn().mockImplementation((values) => {
       global.scrollY = values.top
-    })
+    }),
   })
 
   const props = {
@@ -15,11 +16,13 @@ describe('tests the FinderUI component', () => {
       resetResults: jest.fn(),
       findResults: jest.fn(),
       invertColorMode: jest.fn(),
-      toggleHelp: jest.fn()
+      toggleHelp: jest.fn(),
+      toggleInPosition: jest.fn(),
     },
     results: [],
     isFresh: true,
-    darkMode: true
+    notInPositions: true,
+    darkMode: true,
   }
 
   beforeEach(() => {
@@ -27,6 +30,7 @@ describe('tests the FinderUI component', () => {
     props.actions.findResults.mockClear()
     props.actions.invertColorMode.mockClear()
     props.actions.toggleHelp.mockClear()
+    props.actions.toggleInPosition.mockClear()
 
     document.body.innerHTML = '<div id="root"></div>'
   })
@@ -41,7 +45,7 @@ describe('tests the FinderUI component', () => {
     expect(wrapper.find('.app').length).toBe(1)
     expect(wrapper.find('.header').length).toBe(1)
     expect(wrapper.find('.body').length).toBe(1)
-    expect(wrapper.find('input').length).toBe(11)
+    expect(wrapper.find('input').length).toBe(12)
     expect(wrapper.find('.results').length).toBe(1)
     expect(wrapper.find('.no-result').length).toBe(0)
     expect(wrapper.find('.result').length).toBe(0)
@@ -53,7 +57,7 @@ describe('tests the FinderUI component', () => {
     expect(wrapper.find('.app').length).toBe(1)
     expect(wrapper.find('.header').length).toBe(1)
     expect(wrapper.find('.body').length).toBe(1)
-    expect(wrapper.find('input').length).toBe(11)
+    expect(wrapper.find('input').length).toBe(12)
     expect(wrapper.find('.results').length).toBe(1)
     expect(wrapper.find('.no-result').length).toBe(0)
     expect(wrapper.find('.result').length).toBe(0)
@@ -64,6 +68,12 @@ describe('tests the FinderUI component', () => {
     const wrapper = mount(<Finder {...props} />)
     wrapper.find('.help-message').simulate('click')
     expect(props.actions.toggleHelp).toHaveBeenCalledTimes(1)
+  })
+
+  it('calls the toggleInPosition action when the checkbox is clicked', () => {
+    const wrapper = mount(<Finder {...props} />)
+    wrapper.find('.checkbox').simulate('click')
+    expect(props.actions.toggleInPosition).toHaveBeenCalledTimes(1)
   })
 
   it('renders a no result message when no results are found', () => {
@@ -87,7 +97,10 @@ describe('tests the FinderUI component', () => {
     wrapper.find('.search-button').simulate('submit')
     expect(props.actions.findResults).toHaveBeenCalledTimes(1)
     expect(props.actions.findResults).toHaveBeenCalledWith({})
-    wrapper.setProps({ results: ['WORDS', 'COINS', 'TESTS', 'VALUE', 'WORKS'], isFresh: false })
+    wrapper.setProps({
+      results: ['WORDS', 'COINS', 'TESTS', 'VALUE', 'WORKS'],
+      isFresh: false,
+    })
     expect(wrapper.find('.no-result').length).toBe(0)
     expect(wrapper.find('.result').length).toBe(5)
     expect(wrapper.find('.matches').text()).toBe('Showing 5 matching words.')
@@ -106,7 +119,9 @@ describe('tests the FinderUI component', () => {
     wrapper.setProps({ results: [...Array(500)], isFresh: false })
     expect(wrapper.find('.no-result').length).toBe(0)
     expect(wrapper.find('.result').length).toBe(500)
-    expect(wrapper.find('.matches').text()).toBe('Showing first 500 matching words.')
+    expect(wrapper.find('.matches').text()).toBe(
+      'Showing first 500 matching words.'
+    )
   })
 
   it('resets the results when the reset button is clicked', () => {
@@ -114,7 +129,10 @@ describe('tests the FinderUI component', () => {
     wrapper.find('.search-button').simulate('submit')
     expect(props.actions.findResults).toHaveBeenCalledTimes(1)
     expect(props.actions.findResults).toHaveBeenCalledWith({})
-    wrapper.setProps({ results: ['WORDS', 'COINS', 'TESTS', 'VALUE', 'WORKS'], isFresh: false })
+    wrapper.setProps({
+      results: ['WORDS', 'COINS', 'TESTS', 'VALUE', 'WORKS'],
+      isFresh: false,
+    })
     expect(wrapper.find('.no-result').length).toBe(0)
     expect(wrapper.find('.result').length).toBe(5)
     wrapper.find('.reset-button').simulate('click')
@@ -133,13 +151,30 @@ describe('tests the FinderUI component', () => {
   })
 
   it('navigates to different elements when navigation keys are pressed', () => {
-    const wrapper = mount(<Finder {...props} />, { attachTo: document.getElementById('root') })
+    const wrapper = mount(<Finder {...props} />, {
+      attachTo: document.getElementById('root'),
+    })
 
-    const letter1 = wrapper.find('ForwardRef(Field)').at(0).getDOMNode() as HTMLInputElement
-    const letter2 = wrapper.find('ForwardRef(Field)').at(1).getDOMNode() as HTMLInputElement
-    const letter3 = wrapper.find('ForwardRef(Field)').at(2).getDOMNode() as HTMLInputElement
-    const letter4 = wrapper.find('ForwardRef(Field)').at(3).getDOMNode() as HTMLInputElement
-    const letter5 = wrapper.find('ForwardRef(Field)').at(4).getDOMNode() as HTMLInputElement
+    const letter1 = wrapper
+      .find('ForwardRef(Field)')
+      .at(0)
+      .getDOMNode() as HTMLInputElement
+    const letter2 = wrapper
+      .find('ForwardRef(Field)')
+      .at(1)
+      .getDOMNode() as HTMLInputElement
+    const letter3 = wrapper
+      .find('ForwardRef(Field)')
+      .at(2)
+      .getDOMNode() as HTMLInputElement
+    const letter4 = wrapper
+      .find('ForwardRef(Field)')
+      .at(3)
+      .getDOMNode() as HTMLInputElement
+    const letter5 = wrapper
+      .find('ForwardRef(Field)')
+      .at(4)
+      .getDOMNode() as HTMLInputElement
     const input1 = wrapper.find('input').at(0)
     const input2 = wrapper.find('input').at(1)
     const input3 = wrapper.find('input').at(2)
@@ -167,11 +202,22 @@ describe('tests the FinderUI component', () => {
     expect(letter2).toHaveFocus()
   })
 
-  it('handles input correctly for the correct position inputs', done => {
-    const wrapper = mount(<Finder {...props} />, { attachTo: document.getElementById('root') })
-    const letter1 = wrapper.find('ForwardRef(Field)').at(0).getDOMNode() as HTMLInputElement
-    const letter2 = wrapper.find('ForwardRef(Field)').at(1).getDOMNode() as HTMLInputElement
-    const letter5 = wrapper.find('ForwardRef(Field)').at(4).getDOMNode() as HTMLInputElement
+  it('handles input correctly for the correct position inputs', (done) => {
+    const wrapper = mount(<Finder {...props} />, {
+      attachTo: document.getElementById('root'),
+    })
+    const letter1 = wrapper
+      .find('ForwardRef(Field)')
+      .at(0)
+      .getDOMNode() as HTMLInputElement
+    const letter2 = wrapper
+      .find('ForwardRef(Field)')
+      .at(1)
+      .getDOMNode() as HTMLInputElement
+    const letter5 = wrapper
+      .find('ForwardRef(Field)')
+      .at(4)
+      .getDOMNode() as HTMLInputElement
 
     letter1.focus()
 
@@ -206,12 +252,23 @@ describe('tests the FinderUI component', () => {
     }, 0)
   })
 
-  it('handles input correctly for the anyPos inputs', done => {
-    const wrapper = mount(<Finder {...props} />, { attachTo: document.getElementById('root') })
+  it('handles input correctly for the anyPos inputs', (done) => {
+    const wrapper = mount(<Finder {...props} />, {
+      attachTo: document.getElementById('root'),
+    })
 
-    const letter1 = wrapper.find('ForwardRef(Field)').at(5).getDOMNode() as HTMLInputElement
-    const letter2 = wrapper.find('ForwardRef(Field)').at(6).getDOMNode() as HTMLInputElement
-    const letter5 = wrapper.find('ForwardRef(Field)').at(9).getDOMNode() as HTMLInputElement
+    const letter1 = wrapper
+      .find('ForwardRef(Field)')
+      .at(5)
+      .getDOMNode() as HTMLInputElement
+    const letter2 = wrapper
+      .find('ForwardRef(Field)')
+      .at(6)
+      .getDOMNode() as HTMLInputElement
+    const letter5 = wrapper
+      .find('ForwardRef(Field)')
+      .at(9)
+      .getDOMNode() as HTMLInputElement
     const input1 = wrapper.find('input').at(5)
     const input2 = wrapper.find('input').at(6)
 
@@ -247,14 +304,20 @@ describe('tests the FinderUI component', () => {
     }, 0)
   })
 
-  it('adds a new notLetter input when a letter is typed', done => {
-    const wrapper = mount(<Finder {...props} />, { attachTo: document.getElementById('root') })
-    const letter1 = wrapper.find('ForwardRef(Field)').at(10).getDOMNode() as HTMLInputElement
-    const input1 = wrapper.find('input').at(10)
+  it('adds a new notLetter input when a letter is typed', (done) => {
+    const wrapper = mount(<Finder {...props} />, {
+      attachTo: document.getElementById('root'),
+    })
+
+    const letter1 = wrapper
+      .find('ForwardRef(Field)')
+      .at(11)
+      .getDOMNode() as HTMLInputElement
+    const input1 = wrapper.find('input').at(11)
 
     letter1.focus()
-    expect(wrapper.find('input').length).toBe(11)
-    expect(wrapper.find('ForwardRef(Field)').at(10).getDOMNode()).toHaveFocus()
+    expect(wrapper.find('input').length).toBe(12)
+    expect(wrapper.find('ForwardRef(Field)').at(11).getDOMNode()).toHaveFocus()
     expect(letter1).toHaveFocus()
     expect(wrapper.find({ name: 'notLetter1' }).length).toBe(2)
     expect(wrapper.find({ name: 'notLetter2' }).length).toBe(0)
@@ -263,21 +326,24 @@ describe('tests the FinderUI component', () => {
     userEvent.keyboard('z')
     setTimeout(() => {
       wrapper.update()
-      expect(wrapper.find('input').at(10).prop('value')).toBe('Z')
-      expect(wrapper.find('input').length).toBe(12)
+      expect(wrapper.find('input').at(11).prop('value')).toBe('Z')
+      expect(wrapper.find('input').length).toBe(13)
       expect(wrapper.find({ name: 'notLetter1' }).length).toBe(2)
       expect(wrapper.find({ name: 'notLetter2' }).length).toBe(2)
 
-      const letter2 = wrapper.find('ForwardRef(Field)').at(11).getDOMNode() as HTMLInputElement
-      const input2 = wrapper.find('input').at(11)
+      const letter2 = wrapper
+        .find('ForwardRef(Field)')
+        .at(12)
+        .getDOMNode() as HTMLInputElement
+      const input2 = wrapper.find('input').at(12)
 
       expect(letter2).toHaveFocus()
 
       userEvent.keyboard('z')
       setTimeout(() => {
         expect(letter2).toHaveFocus()
-        expect(wrapper.find('input').at(11).prop('value')).toBe('')
-        expect(wrapper.find('input').length).toBe(12)
+        expect(wrapper.find('input').at(12).prop('value')).toBe('')
+        expect(wrapper.find('input').length).toBe(13)
 
         input2.simulate('keyup', { nativeEvent: { key: 'ArrowLeft' } })
         expect(letter1).toHaveFocus()
@@ -289,13 +355,13 @@ describe('tests the FinderUI component', () => {
         expect(letter1).toHaveFocus()
         input1.simulate('keyup', { nativeEvent: { key: 'Delete' } })
         expect(letter2).toHaveFocus()
-        expect(wrapper.find('input').length).toBe(11)
+        expect(wrapper.find('input').length).toBe(12)
         expect(wrapper.find({ name: 'notLetter1' }).length).toBe(0)
         expect(wrapper.find({ name: 'notLetter2' }).length).toBe(2)
 
         userEvent.keyboard(' ')
         wrapper.update()
-        expect(wrapper.find('input').at(10).prop('value')).toBe('')
+        expect(wrapper.find('input').at(11).prop('value')).toBe('')
         expect(letter2).toHaveFocus()
 
         done()

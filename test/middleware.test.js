@@ -8,6 +8,11 @@ describe('tests middleware', () => {
       if (obj.type === actionTypes.UPDATE_RESULTS) {
         results = obj.payload.results
       }
+    }),
+    getState: jest.fn(() => {
+      return {
+        notInPositions: false
+      }
     })
   }
   const next = jest.fn()
@@ -55,6 +60,31 @@ describe('tests middleware', () => {
     expect(results.length).toEqual(5)
     expect(results).toContain('ABASE')
     expect(results).toContain('ABUSE')
+  })
+
+  
+  it('filters results with notInPositions set to true', () => {
+    const action = {
+      type: actionTypes.FIND_RESULTS,
+      values: {
+        letter1: 'H',
+        anyPosLetter2: 'E',
+        anyPosLetter3: 'A',
+        anyPosLetter4: 'R',
+      }
+    }
+    middleware(store)(next)(action)
+    expect(store.dispatch).toHaveBeenCalledTimes(1)
+    expect(results.length).toEqual(15)
+    expect(results).toContain('HEART')
+    expect(results).toContain('HEARD')
+
+    store.getState = jest.fn(() => {return {notInPositions: true}})
+    middleware(store)(next)(action)
+    expect(store.dispatch).toHaveBeenCalledTimes(2)
+    expect(results.length).toEqual(8)
+    expect(results).not.toContain('HEART')
+    expect(results).not.toContain('HEARD')
   })
 
   it('finds word if only one option', () => {

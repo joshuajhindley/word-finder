@@ -41,11 +41,23 @@ const showHelp = (state = false, action) => {
   }
 }
 
+const notInPositions = (state = true, action) => {
+  switch (action.type) {
+    case actionTypes.TOGGLE_IN_POSITION:
+      return !state
+    case actionTypes.RESET_RESULTS:
+      return true
+    default:
+      return state
+  }
+}
+
 const reducers = {
   darkMode,
   isFresh,
   results,
-  showHelp
+  showHelp,
+  notInPositions
 }
 
 export const rootReducer = combineReducers(reducers)

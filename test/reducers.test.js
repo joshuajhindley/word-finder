@@ -7,6 +7,7 @@ describe('tests reducers correctly update state', () => {
     expect(resp).toEqual({
       darkMode: true,
       isFresh: true,
+      notInPositions: true,
       results: [],
       showHelp: false
     })
@@ -17,6 +18,7 @@ describe('tests reducers correctly update state', () => {
     expect(resp).toEqual({
       darkMode: true,
       isFresh: false,
+      notInPositions: true,
       results: [],
       showHelp: false
     })
@@ -30,6 +32,7 @@ describe('tests reducers correctly update state', () => {
     expect(resp).toEqual({
       darkMode: true,
       isFresh: true,
+      notInPositions: true,
       results: ['TESTS', 'VALUE', 'WORKS'],
       showHelp: false
     })
@@ -40,6 +43,7 @@ describe('tests reducers correctly update state', () => {
     expect(resp).toEqual({
       darkMode: true,
       isFresh: true,
+      notInPositions: true,
       results: [],
       showHelp: false
     })
@@ -50,6 +54,7 @@ describe('tests reducers correctly update state', () => {
     expect(resp).toEqual({
       darkMode: false,
       isFresh: true,
+      notInPositions: true,
       results: [],
       showHelp: false
     })
@@ -60,8 +65,20 @@ describe('tests reducers correctly update state', () => {
     expect(resp).toEqual({
       darkMode: true,
       isFresh: true,
+      notInPositions: true,
       results: [],
       showHelp: true
+    })
+  })
+
+  it('returns correct values for TOGGLE_IN_POSITION', () => {
+    const resp = rootReducer({}, { type: actionTypes.TOGGLE_IN_POSITION })
+    expect(resp).toEqual({
+      darkMode: true,
+      isFresh: true,
+      notInPositions: false,
+      results: [],
+      showHelp: false
     })
   })
 })

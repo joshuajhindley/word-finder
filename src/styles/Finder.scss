@@ -175,6 +175,19 @@ $font-family: Roboto, sans-serif;
         }
       }
 
+      .checkbox {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        input {
+          width: 20px;
+          height: 20px;
+          margin-right: 10px;
+        }
+      }
+
       button {
         border: 2px solid $dark-color;
         border-radius: 5px;

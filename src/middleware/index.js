@@ -34,20 +34,31 @@ const findExclusionLetters = values => {
 }
 
 const findResults = (store, action) => {
+  const notInPositions = store.getState().notInPositions
   const values = action.values
 
   const searchTerm = findCorrectPosLetters(values)
   const allLetters = findAnyPosLetters(values)
   const exclusion = findExclusionLetters(values)
 
-  const results = words
+  let results = words
     .filter(
       word =>
         word.match(searchTerm) &&
         !word.match(exclusion) &&
         !allLetters.map(letter => word.includes(letter)).includes(false)
     )
-    .slice(0, 500)
+
+    if (notInPositions) {
+      for (let i = 0; i < 5; i++) {
+        const val = values['anyPosLetter' + (i+1)]
+        if (val) {
+          results = results.filter(word => word.charAt(i) !== val)
+        }
+      }
+    }
+  
+  results = results.slice(0, 500)
 
   store.dispatch(actionCreators.updateResults(results))
 }
